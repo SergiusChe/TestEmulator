@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html  lang="ru">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Test</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style>
+		table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+			text-align: center;
+			font-size: 10pt;
+		}
+		h3 {
+			text-align: center;
+		}	
+		.lft{
+		    position:absolute;
+		    width:200px;
+		}
+		.rt {
+		    position:relative;
+		    left:200px;
+		}
+	</style>
+	<script>
+		window.onload = function()
+		{	
+			var xhttp = new XMLHttpRequest();
+			document.getElementById("start").onclick = function()
+			{
+				var iq = Number(document.getElementById("iq").value);
+				var from = Number(document.getElementById("from").value);
+				var to = Number(document.getElementById("to").value);
+				if ((to < from) || (from > 100) || (to > 100) || (from < 0) || (to < 0) || (iq > 100) || (iq < 0))
+				{
+					document.getElementById("iq").value = "";
+					document.getElementById("from").value = "";
+					document.getElementById("to").value = "";
+				}
+				else
+				{
+					xhttp.open("GET", "api.php?iq=" + iq + "&from=" + from + "&to=" + to, true);
+					xhttp.send();
+				} 
+			};
+			xhttp.onreadystatechange = function()
+			{
+				if (this.readyState == 4 && this.status == 200)
+			    		document.getElementById("container").innerHTML = this.responseText;
+			}
+		}
+	</script>
+</head>
+<body>	
+	<div class="container-fluid">
+		<div class = "lft">
+			Введите IQ (0-100):<br>
+			Сложность задач ОТ:<br>
+			Сложность задач ДО:<br>
+		</div>
+		<div class = "rt">
+			<input type="text" id="iq" value="0"><br>
+			<input type="text" id="from" value="0"><br>
+			<input type="text" id="to" value="0"><br>
+		</div>
+		<hr>
+		<button style="width:140px;height:40px" id = "start">Запустить тест</button>
+		<div id = "container"></div>
+	</div>
+</body>
+</html>
